@@ -3,18 +3,12 @@ const router = express.Router();
 import { authUser, registerUser, logoutUser, getUserProfile, updateUserProfile } from '../controllers/userController.js';
 
 router.post('/auth', authUser)
-router.post('/register', registerUser)
+router.post('/', registerUser)
 router.post('/logout', logoutUser)
-router.get('/profile', getUserProfile)
-router.put('/profile', updateUserProfile)
+router.route('/profile').get(getUserProfile).put(updateUserProfile)
 
 export default router
 
- 
- 
- 
- 
- 
  
  // - **POST /api/users** - REGISTER A USER
  // - **POST /api/users/auth** - AUTHENTICATE A USER AND GET TOKEN
