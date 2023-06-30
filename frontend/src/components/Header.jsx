@@ -2,12 +2,32 @@ import { Navbar, Nav, Container, NavDropdown, Badge } from "react-bootstrap";
 import {useSelector, useDispatch} from 'react-redux'
 import { FaSignInAlt, FaSignOutAlt } from "react-icons/fa";
 import { LinkContainer } from "react-router-bootstrap";
+import { useLogoutMutation } from "../slices/usersApiSlice";
+import {clearCredentials} from '../slices/authSlice'
+import { useNavigate } from "react-router-dom";
+import {toast} from  'react-toastify'
 
 
 
 const Header = () => {
   const {userInfo} = useSelector((state) => state.auth)
+  
   const dispatch = useDispatch();
+  const navigate  = useNavigate();
+
+  const [logoutApiCall] = useLogoutMutation();
+
+  const logoutHandler = async() => {
+    try {
+      await logoutApiCall().unwrap();
+      dispatch(clearCredentials());
+      navigate('/')
+
+    } catch (err) {
+      toast.error(err);
+      console.log(err)
+    }
+  }
 
   return (
     <header>
@@ -28,7 +48,7 @@ const Header = () => {
                         Profile
                       </NavDropdown.Item>
                     </LinkContainer>
-                    <NavDropdown.Item>
+                    <NavDropdown.Item onClick={logoutHandler}>
                       Logout
                     </NavDropdown.Item>
                   </NavDropdown>
