@@ -5,6 +5,7 @@ import FormContainer from "../components/FormContainer";
 import {useDispatch, useSelector} from 'react-redux'
 import {useLoginMutation} from "../slices/usersApiSlice";
 import { setCredentials } from "../slices/authSlice";
+import {toast} from 'react-toastify';
 
 
 const LoginScreen = () => {
@@ -30,6 +31,7 @@ const LoginScreen = () => {
       dispatch(setCredentials({...res}))
       navigate('/')
     } catch (err) {
+      toast.error(err?.data?.message || err.error)
       console.log(err?.data?.message || err.error)
     }
   };
@@ -55,7 +57,7 @@ const LoginScreen = () => {
             type="password"
             value={password}
             placeholder="Enter password"
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => setPassword(e.target.value)}
           ></Form.Control>
         </Form.Group>
 
